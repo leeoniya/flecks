@@ -81,17 +81,45 @@ COLS.forEach(col => {
 GAPS.forEach((g, i) => {
 	let gnum = i + 1;
 	let flg = ".fl.g" + gnum;
+	let flgx = ".fl.g" + gnum + "x";
+	let flgy = ".fl.g" + gnum + "y";
 
 	FLECKS[flg] = {
 		padding: g/2,
+	};
+
+	FLECKS[flgx] = {
+		paddingLeft: g/2,
+		paddingRight: g/2,
+	};
+
+	FLECKS[flgy] = {
+		paddingTop: g/2,
+		paddingBottom: g/2,
 	};
 
 	FLECKS[flg + " > *"] = {
 		margin: g/2,
 	};
 
+	FLECKS[flgx + " > *"] = {
+		marginLeft: g/2,
+		marginRight: g/2,
+	};
+
+	FLECKS[flgy + " > *"] = {
+		marginTop: g/2,
+		marginBottom: g/2,
+	};
+
 	COLS.forEach(col => {
-		FLECKS[flg + " > .fi-" + col] = {
+		let sels = (
+			flg + " > .fi-" + col
+			+ "," +
+			flgx + " > .fi-" + col
+		);
+
+		FLECKS[sels] = {
 			width: calc(col/COLS.length, g),
 		};
 	});
@@ -134,13 +162,35 @@ for (let bp in WIDTHS) {
 	GAPS.forEach((g, i) => {
 		let gnum = i + 1;
 		let flg = ".fl.g" + gnum;
+		let flgx = ".fl.g" + gnum + "x";
+		let flgy = ".fl.g" + gnum + "y";
 
 		mq[flg + "-" + bp] = {
 			padding: g/2,
 		};
 
+		mq[flgx + "-" + bp] = {
+			paddingLeft: g/2,
+			paddingRight: g/2,
+		};
+
+		mq[flgy + "-" + bp] = {
+			paddingTop: g/2,
+			paddingBottom: g/2,
+		};
+
 		mq[flg + "-" + bp + " > *"] = {
 			margin: g/2,
+		};
+
+		mq[flgx + "-" + bp + " > *"] = {
+			marginLeft: g/2,
+			marginRight: g/2,
+		};
+
+		mq[flgy + "-" + bp + " > *"] = {
+			marginTop: g/2,
+			marginBottom: g/2,
 		};
 
 		COLS.forEach(col => {
@@ -148,10 +198,16 @@ for (let bp in WIDTHS) {
 				flg + " > .fi-" + col + "-" + bp
 				+ "," +
 				flg + "-" + bp + " > .fi-" + col
+				+ "," +
+				flgx + " > .fi-" + col + "-" + bp
+				+ "," +
+				flgx + "-" + bp + " > .fi-" + col
 			);
 
-			for (let bp2 in WIDTHS)
+			for (let bp2 in WIDTHS) {
 				sels += "," + (flg + "-" + bp + " > .fi-" + col + "-" + bp2);
+				sels += "," + (flgx + "-" + bp + " > .fi-" + col + "-" + bp2);
+			}
 
 			mq[sels] = {
 				width: calc(col/COLS.length, g),
