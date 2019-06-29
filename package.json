@@ -1,0 +1,30 @@
+{
+  "name": "flecks",
+  "version": "0.1.0",
+  "description": "A lightweight CSS flexbox grid",
+  "main": "./src/flecks.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leeoniya/flecks.git"
+  },
+  "keywords": [
+    "css",
+    "flexbox",
+    "grid"
+  ],
+  "author": "Leon Sorokin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leeoniya/flecks/issues"
+  },
+  "homepage": "https://github.com/leeoniya/flecks",
+  "devDependencies": {
+    "clean-css": "^4.2.1",
+    "cssobj-core": "^1.1.9",
+    "cssobj-plugin-default-unit": "^2.3.4",
+    "cssobj-plugin-gencss": "^2.0.7"
+  }
+}
