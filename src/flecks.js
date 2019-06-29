@@ -27,9 +27,9 @@ function generate(opts) {
 
 			// * is considered "slow" :/
 			"> *": {
-				//	1. mobile-first: by default, all flex children are full width
+				// 1. mobile-first: by default, all flex children are full width
 				width: "100%",
-				//	2a. .fi-<col>* flex children should not grow, so it's disabled here to avoid having to disable it everywhere
+				// 2a. .fi-<col>* flex children should not grow, so it's disabled here to avoid having to disable it everywhere
 				flex: "0 1 auto",
 			},
 
@@ -40,9 +40,6 @@ function generate(opts) {
 		},
 	};
 
-
-	/* 2b. re-enable it for flex children without col specifiers */
-
 	CSS[".fi"] = {
 		width: "auto",
 	};
@@ -51,6 +48,7 @@ function generate(opts) {
 	let displayNone = [];
 
 	for (let bp in BREAKS) {
+		// 2b. re-enable flex-grow for flex children without col specifiers
 		flexGrow1.push(".fi-" + bp);
 		displayNone.push(".v-" + bp);
 	}
