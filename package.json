@@ -25,6 +25,7 @@
     "clean-css": "^4.2.1",
     "cssobj-core": "^1.1.9",
     "cssobj-plugin-default-unit": "^2.3.4",
-    "cssobj-plugin-gencss": "^2.0.7"
+    "cssobj-plugin-gencss": "^2.0.7",
+    "yargs-parser": "^13.1.1"
   }
 }
