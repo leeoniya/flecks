@@ -45,21 +45,45 @@ function generate(opts) {
 	};
 
 	let flexGrow1 = [".fi"];
-	let displayNone = [];
+	let hidden = [];
 
 	for (let bp in BREAKS) {
 		// 2b. re-enable flex-grow for flex children without col specifiers
 		flexGrow1.push(".fi-" + bp);
-		displayNone.push(".v-" + bp);
+		hidden.push(
+			".v-" + bp,
+			".v-" + bp + "-rel",
+			".v-" + bp + "-abs",
+			".v-" + bp + "-fix",
+			".v-" + bp + "-stk",
+		);
 	}
 
 	CSS[flexGrow1.join(",")] = {
 		flexGrow: 1,
 	};
 
-	CSS[displayNone.join(",")] = {
-		display: "none",
+	// todo: how to prevent tabindex? opacity: 0?, visibility: hidden?
+	const hideCss = {
+		position: "fixed",		// !important
+		top: "100%",			// !important
+		left: "100%",			// !important
+		"-webkit-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		userSelect: "none",
 	};
+
+	const showCss = {
+		left: "auto",
+		top: "auto",
+		"-webkit-user-select": "auto",
+		"-moz-user-select": "auto",
+		"-ms-user-select": "auto",
+		userSelect: "auto",
+	};
+
+	CSS[hidden.join(",")] = hideCss;
 
 	COLS.forEach(col => {
 		CSS[".fi-" + col] = {
@@ -124,14 +148,22 @@ function generate(opts) {
 		let mq = {};
 
 		// hidden at bp+
-		mq[".h-" + bp] = {
-			display: "none",
-		};
+		mq[".h-" + bp] = hideCss;
+
+		mq[
+			".v-" + bp + "," +
+			".v-" + bp + "-rel," +
+			".v-" + bp + "-abs," +
+			".v-" + bp + "-fix," +
+			".v-" + bp + "-stk"
+		] = showCss;
 
 		// visible at bp+
-		mq[".v-" + bp] = {
-			display: "inline-block",
-		};
+		mq[".v-" + bp]			= {position: "static"};
+		mq[".v-" + bp + "-rel"]	= {position: "relative"};
+		mq[".v-" + bp + "-abs"]	= {position: "absolute"};
+		mq[".v-" + bp + "-fix"]	= {position: "fixed"};
+		mq[".v-" + bp + "-stk"]	= {position: "sticky"};
 
 		// width snapping to bp
 		mq[".bp"] = {
