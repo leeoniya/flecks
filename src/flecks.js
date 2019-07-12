@@ -253,15 +253,24 @@ function generate(opts) {
 					flgx + " > .fi-" + col + "-" + bp
 				);
 
-				for (let bp2 in BREAKS) {
-					sels += "," + (flg + "-" + bp + " > .fi-" + col + "-" + bp2);
-					sels += "," + (flgx + "-" + bp + " > .fi-" + col + "-" + bp2);
-				}
-
 				mq[sels] = {
 					width: calc(col/COLS.length, g),
 				};
 			});
+
+			for (let bp2 in BREAKS) {
+				COLS.forEach(col => {
+					let sels = (
+						flg + "-" + bp + " > .fi-" + col + "-" + bp2
+						+ "," +
+						flgx + "-" + bp + " > .fi-" + col + "-" + bp2
+					);
+
+					mq[sels] = {
+						width: calc(col/COLS.length, g),
+					};
+				});
+			}
 		});
 
 		CSS["@media (min-width:" + BREAKS[bp] + "px)"] = mq;
