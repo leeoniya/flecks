@@ -8,8 +8,6 @@ const cssobj_core = require('cssobj-core');
 const genCss = require('cssobj-plugin-gencss');
 const defaultUnit = require('cssobj-plugin-default-unit');
 
-let CleanCSS = require('clean-css');
-
 const argv = require('yargs-parser')(process.argv.slice(2), {array: ['breaks','gaps']});
 
 if (argv.breaks) {
@@ -41,6 +39,12 @@ let css = cssobj(cssStruct).css;
 
 fs.writeFileSync(argv.out, css, 'utf8');
 
-let cssMin = new CleanCSS({level: 2}).minify(css).styles;
+let cssMin = css
+	.replace(/\s+/gm,' ')
+	.replace(/ ?\; ?/g, ";")
+	.replace(/ ?\{ ?/g, "{")
+	.replace(/ ?;?\} ?/g, "}")
+	.replace(/ ?\: ?/g, ':')
+	.replace(/ ?\> ?/g, '>');	// todo: all combinators
 
 fs.writeFileSync(argv.out.replace('.css', '.min.css'), cssMin, 'utf8');
