@@ -190,13 +190,21 @@ function generate(opts) {
 
 			COLS.forEach(col => {
 				let sels = (
-					flg + " > .fi-" + col + "-" + bp
-					+ "," +
 					flg + "-" + bp + " > .fi-" + col
 					+ "," +
-					flgx + " > .fi-" + col + "-" + bp
-					+ "," +
 					flgx + "-" + bp + " > .fi-" + col
+				);
+
+				mq[sels] = {
+					width: calc(col/COLS.length, g),
+				};
+			});
+
+			COLS.forEach(col => {
+				let sels = (
+					flg + " > .fi-" + col + "-" + bp
+					+ "," +
+					flgx + " > .fi-" + col + "-" + bp
 				);
 
 				for (let bp2 in BREAKS) {
