@@ -258,7 +258,12 @@ function generate(opts) {
 				};
 			});
 
+			let skip = false;
+
 			for (let bp2 in BREAKS) {
+				if (skip)
+					continue;
+
 				COLS.forEach(col => {
 					let sels = (
 						flg + "-" + bp + " > .fi-" + col + "-" + bp2
@@ -270,6 +275,9 @@ function generate(opts) {
 						width: calc(col/COLS.length, g),
 					};
 				});
+
+				if (bp2 == bp)
+					skip = true;
 			}
 		});
 
