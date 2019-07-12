@@ -36,7 +36,13 @@ function generate(opts) {
 			// 3. prevent image flex items from being stretched vertically
 			"> img": {
 				alignSelf: "center"
-			}
+			},
+		},
+		".m0": {
+			margin: "0 !important",
+		},
+		".p0": {
+			padding: "0 !important",
 		},
 	};
 
@@ -173,7 +179,15 @@ function generate(opts) {
 		mq[".fi-" + bp] = {
 			width: "auto",
 		};
+/*
+		mq[".m0-" + bp] = {
+			margin: "0 !important"
+		};
 
+		mq[".p0-" + bp] = {
+			padding: "0 !important"
+		};
+*/
 		COLS.forEach(col => {
 			mq[".fi-" + col + "-" + bp] = {
 				width: calc(col/COLS.length, 0),
