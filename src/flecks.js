@@ -46,6 +46,19 @@ function generate(opts) {
 		},
 	};
 
+	// gapped collapsing width should exclude margins
+	GAPS.forEach((g, i) => {
+		let gnum = i + 1;
+
+		CSS[
+			".fl.g" + gnum + " > *"
+			+ "," +
+			".fl.g" + gnum + "x > *"
+		] = {
+			width: calc(1, g),
+		};
+	});
+
 	CSS[".fi"] = {
 		width: "auto",
 	};
@@ -56,6 +69,7 @@ function generate(opts) {
 	for (let bp in BREAKS) {
 		// 2b. re-enable flex-grow for flex children without col specifiers
 		flexGrow1.push(".fi-" + bp);
+
 		hidden.push(
 			".v-" + bp,
 			".v-" + bp + "-rel",
@@ -222,11 +236,13 @@ function generate(opts) {
 
 			mq[flg + "-" + bp + " > *"] = {
 				margin: g/2,
+				width: calc(1, g),
 			};
 
 			mq[flgx + "-" + bp + " > *"] = {
 				marginLeft: g/2,
 				marginRight: g/2,
+				width: calc(1, g),
 			};
 
 			mq[flgy + "-" + bp + " > *"] = {
