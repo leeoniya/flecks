@@ -59,16 +59,16 @@ function generate(opts) {
 		};
 	});
 
-	CSS[".fi"] = {
+	CSS[".fl > .fi"] = {
 		width: "auto",
 	};
 
-	let flexGrow1 = [".fi"];
+	let flexGrow1 = [".fl > .fi"];
 	let hidden = [];
 
 	for (let bp in BREAKS) {
 		// 2b. re-enable flex-grow for flex children without col specifiers
-		flexGrow1.push(".fi-" + bp);
+		flexGrow1.push(".fl > .fi-" + bp);
 
 		hidden.push(
 			".v-" + bp,
@@ -106,13 +106,13 @@ function generate(opts) {
 	CSS[hidden.join(",")] = hideCss;
 
 	COLS.forEach(col => {
-		CSS[".fi-" + col] = {
+		CSS[".fl > .fi-" + col] = {
 			width: calc(col/COLS.length, 0),
 		};
 	});
 
 	COLS.forEach(col => {
-		CSS[".o-" + col] = {
+		CSS[".fl > .o-" + col] = {
 			order: col,
 		};
 	});
@@ -190,10 +190,10 @@ function generate(opts) {
 			maxWidth: BREAKS[bp] + "px"
 		};
 
-		mq[".fi-" + bp] = {
+		mq[".fl > .fi-" + bp] = {
 			width: "auto",
 		};
-/*
+
 		mq[".m0-" + bp] = {
 			margin: "0 !important"
 		};
@@ -201,20 +201,28 @@ function generate(opts) {
 		mq[".p0-" + bp] = {
 			padding: "0 !important"
 		};
-*/
+
 		COLS.forEach(col => {
-			mq[".fi-" + col + "-" + bp] = {
+			mq[".fl > .fi-" + col + "-" + bp] = {
 				width: calc(col/COLS.length, 0),
 			};
 		});
 
 		COLS.forEach(col => {
-			mq[".o-" + col + "-" + bp] = {
+			mq[".fl > .o-" + col + "-" + bp] = {
 				order: col,
 			};
 		});
 
-		GAPS.forEach((g, i) => {
+		CSS["@media (min-width:" + BREAKS[bp] + "px)"] = mq;
+	}
+
+	let tail = {};
+
+	GAPS.forEach((g, i) => {
+		for (let bp in BREAKS) {
+			let mq = {};
+			let px1 = BREAKS[bp];
 			let gnum = i + 1;
 			let flg = ".fl.g" + gnum;
 			let flgx = ".fl.g" + gnum + "x";
@@ -274,31 +282,46 @@ function generate(opts) {
 				};
 			});
 
-			let skip = false;
-
 			for (let bp2 in BREAKS) {
-				if (skip)
-					continue;
+				let px2 = BREAKS[bp2];
 
-				COLS.forEach(col => {
-					let sels = (
-						flg + "-" + bp + " > .fi-" + col + "-" + bp2
-						+ "," +
-						flgx + "-" + bp + " > .fi-" + col + "-" + bp2
-					);
+				if (px2 > px1) {
+					let mq2 = {};
 
-					mq[sels] = {
-						width: calc(col/COLS.length, g),
-					};
-				});
+					COLS.forEach(col => {
+						let sels = (
+							flg + "-" + bp + " > .fi-" + col + "-" + bp2
+							+ "," +
+							flgx + "-" + bp + " > .fi-" + col + "-" + bp2
+						);
 
-				if (bp2 == bp)
-					skip = true;
+						mq2[sels] = {
+							width: calc(col/COLS.length, g),
+						};
+					});
+
+					tail["@media (min-width:" + px2 + "px)" + '\t'.repeat(gnum)] = mq2;
+				}
+				else {
+					COLS.forEach(col => {
+						let sels = (
+							flg + "-" + bp + " > .fi-" + col + "-" + bp2
+							+ "," +
+							flgx + "-" + bp + " > .fi-" + col + "-" + bp2
+						);
+
+						mq[sels] = {
+							width: calc(col/COLS.length, g),
+						};
+					});
+				}
 			}
-		});
 
-		CSS["@media (min-width:" + BREAKS[bp] + "px)"] = mq;
-	}
+			CSS["@media (min-width:" + px1 + "px)" + ' '.repeat(gnum)] = mq;
+		}
+	});
+
+	Object.assign(CSS, tail);
 
 	return CSS;
 }
