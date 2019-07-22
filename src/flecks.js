@@ -46,19 +46,6 @@ function generate(opts) {
 		},
 	};
 
-	// gapped collapsing width should exclude margins
-	GAPS.forEach((g, i) => {
-		let gnum = i + 1;
-
-		CSS[
-			".fl.g" + gnum + " > *"
-			+ "," +
-			".fl.g" + gnum + "x > *"
-		] = {
-			width: calc(1, g),
-		};
-	});
-
 	CSS[".fl > .fi"] = {
 		width: "auto",
 	};
@@ -139,11 +126,13 @@ function generate(opts) {
 
 		CSS[flg + " > *"] = {
 			margin: g/2,
+			width: calc(1, g),
 		};
 
 		CSS[flgx + " > *"] = {
 			marginLeft: g/2,
 			marginRight: g/2,
+			width: calc(1, g),
 		};
 
 		CSS[flgy + " > *"] = {
