@@ -8,7 +8,7 @@ const cssobj_core = require('cssobj-core');
 const genCss = require('cssobj-plugin-gencss');
 const defaultUnit = require('cssobj-plugin-default-unit');
 
-const argv = require('yargs-parser')(process.argv.slice(2), {array: ['breaks','gaps']});
+const argv = require('yargs-parser')(process.argv.slice(2), {array: ['breaks','gaps'], boolean: ['noparent']});
 
 if (argv.breaks) {
 	let o = {};
@@ -33,6 +33,7 @@ let cssStruct = generate({
 	cols: argv.cols,
 	breaks: argv.breaks,
 	gaps: argv.gaps,
+	parent: !argv.noparent,
 });
 
 let css = cssobj(cssStruct).css.replace(/\s\s+\{/gm, '{');

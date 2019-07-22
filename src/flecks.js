@@ -46,16 +46,19 @@ function generate(opts) {
 		},
 	};
 
-	CSS[".fl > .fi"] = {
+	const prefix = opts.parent ? ".fl" : "";
+	const prefixChildren = opts.parent ? prefix + " > " : "";
+
+	CSS[prefixChildren + ".fi"] = {
 		width: "auto",
 	};
 
-	let flexGrow1 = [".fl > .fi"];
+	let flexGrow1 = [prefixChildren + ".fi"];
 	let hidden = [];
 
 	for (let bp in BREAKS) {
 		// 2b. re-enable flex-grow for flex children without col specifiers
-		flexGrow1.push(".fl > .fi-" + bp);
+		flexGrow1.push(prefixChildren + ".fi-" + bp);
 
 		hidden.push(
 			".v-" + bp,
@@ -93,22 +96,22 @@ function generate(opts) {
 	CSS[hidden.join(",")] = hideCss;
 
 	COLS.forEach(col => {
-		CSS[".fl > .fi-" + col] = {
+		CSS[prefixChildren + ".fi-" + col] = {
 			width: calc(col/COLS.length, 0),
 		};
 	});
 
 	COLS.forEach(col => {
-		CSS[".fl > .o-" + col] = {
+		CSS[prefixChildren + ".o-" + col] = {
 			order: col,
 		};
 	});
 
 	GAPS.forEach((g, i) => {
 		let gnum = i + 1;
-		let flg = ".fl.g" + gnum;
-		let flgx = ".fl.g" + gnum + "x";
-		let flgy = ".fl.g" + gnum + "y";
+		let flg = prefix + ".g" + gnum;
+		let flgx = prefix + ".g" + gnum + "x";
+		let flgy = prefix + ".g" + gnum + "y";
 
 		CSS[flg] = {
 			padding: g/2,
@@ -179,7 +182,7 @@ function generate(opts) {
 			maxWidth: BREAKS[bp] + "px"
 		};
 
-		mq[".fl > .fi-" + bp] = {
+		mq[prefixChildren + ".fi-" + bp] = {
 			width: "auto",
 		};
 
@@ -192,13 +195,13 @@ function generate(opts) {
 		};
 
 		COLS.forEach(col => {
-			mq[".fl > .fi-" + col + "-" + bp] = {
+			mq[prefixChildren + ".fi-" + col + "-" + bp] = {
 				width: calc(col/COLS.length, 0),
 			};
 		});
 
 		COLS.forEach(col => {
-			mq[".fl > .o-" + col + "-" + bp] = {
+			mq[prefixChildren + ".o-" + col + "-" + bp] = {
 				order: col,
 			};
 		});
@@ -213,9 +216,9 @@ function generate(opts) {
 			let mq = {};
 			let px1 = BREAKS[bp];
 			let gnum = i + 1;
-			let flg = ".fl.g" + gnum;
-			let flgx = ".fl.g" + gnum + "x";
-			let flgy = ".fl.g" + gnum + "y";
+			let flg = prefix + ".g" + gnum;
+			let flgx = prefix + ".g" + gnum + "x";
+			let flgy = prefix + ".g" + gnum + "y";
 
 			mq[flg + "-" + bp] = {
 				padding: g/2,
