@@ -35,7 +35,7 @@ let cssStruct = generate({
 	gaps: argv.gaps,
 });
 
-let css = cssobj(cssStruct).css;
+let css = cssobj(cssStruct).css.replace(/\s\s+\{/gm, '{');
 
 fs.writeFileSync(argv.out, css, 'utf8');
 
