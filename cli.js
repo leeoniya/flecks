@@ -1,6 +1,11 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'flecks';
+
 // node cli.js --cols 12 --breaks xs:320 sm:375 md:768 lg:1024 xl:1280 xxl:1920 --gaps 8 16 24 32 48 --out ./dist/flecks.css
 
-const { generate } = require('./src/flecks.js');
+const { generate } = require('./src/flecks');
 
 const fs = require('fs');
 
