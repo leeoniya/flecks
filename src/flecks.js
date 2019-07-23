@@ -8,15 +8,22 @@ function generate(opts) {
 		xl: 1280,
 		xxl: 1920,
 	};
-	const GAPS = opts.gaps || [];
+	const GAPS = (opts.gaps || []).map(g => {
+		let m = /([0-9.]+)(\S*)/g.exec(g);
+		return [m[1], m[2] || "px"];
+	});
 
-	function calc(frac, gap) {
+	function calc(frac, gap, un) {
 		var pct = +(frac * 100).toFixed(6);
 
 		if (gap == 0)
 			return pct + "%";
 
-		return "calc(" + pct + "% - " + gap + "px)";
+		return "calc(" + pct + "% - " + gap + (un || "px") + ")";
+	}
+
+	function halfGap(g) {
+		return g[0]/2 + g[1];
 	}
 
 	const CSS = {
@@ -114,33 +121,33 @@ function generate(opts) {
 		let flgy = prefix + ".g" + gnum + "y";
 
 		CSS[flg] = {
-			padding: g/2,
+			padding: halfGap(g),
 		};
 
 		CSS[flgx] = {
-			paddingLeft: g/2,
-			paddingRight: g/2,
+			paddingLeft: halfGap(g),
+			paddingRight: halfGap(g),
 		};
 
 		CSS[flgy] = {
-			paddingTop: g/2,
-			paddingBottom: g/2,
+			paddingTop: halfGap(g),
+			paddingBottom: halfGap(g),
 		};
 
 		CSS[flg + " > *"] = {
-			margin: g/2,
-			width: calc(1, g),
+			margin: halfGap(g),
+			width: calc(1, g[0], g[1]),
 		};
 
 		CSS[flgx + " > *"] = {
-			marginLeft: g/2,
-			marginRight: g/2,
-			width: calc(1, g),
+			marginLeft: halfGap(g),
+			marginRight: halfGap(g),
+			width: calc(1, g[0], g[1]),
 		};
 
 		CSS[flgy + " > *"] = {
-			marginTop: g/2,
-			marginBottom: g/2,
+			marginTop: halfGap(g),
+			marginBottom: halfGap(g),
 		};
 
 		COLS.forEach(col => {
@@ -151,7 +158,7 @@ function generate(opts) {
 			);
 
 			CSS[sels] = {
-				width: calc(col/COLS.length, g),
+				width: calc(col/COLS.length, g[0], g[1]),
 			};
 		});
 	});
@@ -221,33 +228,33 @@ function generate(opts) {
 			let flgy = prefix + ".g" + gnum + "y";
 
 			mq[flg + "-" + bp] = {
-				padding: g/2,
+				padding: halfGap(g),
 			};
 
 			mq[flgx + "-" + bp] = {
-				paddingLeft: g/2,
-				paddingRight: g/2,
+				paddingLeft: halfGap(g),
+				paddingRight: halfGap(g),
 			};
 
 			mq[flgy + "-" + bp] = {
-				paddingTop: g/2,
-				paddingBottom: g/2,
+				paddingTop: halfGap(g),
+				paddingBottom: halfGap(g),
 			};
 
 			mq[flg + "-" + bp + " > *"] = {
-				margin: g/2,
-				width: calc(1, g),
+				margin: halfGap(g),
+				width: calc(1, g[0], g[1]),
 			};
 
 			mq[flgx + "-" + bp + " > *"] = {
-				marginLeft: g/2,
-				marginRight: g/2,
-				width: calc(1, g),
+				marginLeft: halfGap(g),
+				marginRight: halfGap(g),
+				width: calc(1, g[0], g[1]),
 			};
 
 			mq[flgy + "-" + bp + " > *"] = {
-				marginTop: g/2,
-				marginBottom: g/2,
+				marginTop: halfGap(g),
+				marginBottom: halfGap(g),
 			};
 
 			COLS.forEach(col => {
@@ -258,7 +265,7 @@ function generate(opts) {
 				);
 
 				mq[sels] = {
-					width: calc(col/COLS.length, g),
+					width: calc(col/COLS.length, g[0], g[1]),
 				};
 			});
 
@@ -270,7 +277,7 @@ function generate(opts) {
 				);
 
 				mq[sels] = {
-					width: calc(col/COLS.length, g),
+					width: calc(col/COLS.length, g[0], g[1]),
 				};
 			});
 
@@ -288,7 +295,7 @@ function generate(opts) {
 						);
 
 						mq2[sels] = {
-							width: calc(col/COLS.length, g),
+							width: calc(col/COLS.length, g[0], g[1]),
 						};
 					});
 
@@ -303,7 +310,7 @@ function generate(opts) {
 						);
 
 						mq[sels] = {
-							width: calc(col/COLS.length, g),
+							width: calc(col/COLS.length, g[0], g[1]),
 						};
 					});
 				}
