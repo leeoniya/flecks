@@ -136,13 +136,11 @@ function generate(opts) {
 
 		CSS[flg + " > *"] = {
 			margin: halfGap(g),
-			width: calc(1, g[0], g[1]),
 		};
 
 		CSS[flgx + " > *"] = {
 			marginLeft: halfGap(g),
 			marginRight: halfGap(g),
-			width: calc(1, g[0], g[1]),
 		};
 
 		CSS[flgy + " > *"] = {
@@ -243,13 +241,11 @@ function generate(opts) {
 
 			mq[flg + "-" + bp + " > *"] = {
 				margin: halfGap(g),
-				width: calc(1, g[0], g[1]),
 			};
 
 			mq[flgx + "-" + bp + " > *"] = {
 				marginLeft: halfGap(g),
 				marginRight: halfGap(g),
-				width: calc(1, g[0], g[1]),
 			};
 
 			mq[flgy + "-" + bp + " > *"] = {
