@@ -57,16 +57,18 @@ function generate(opts) {
 	const prefixChildren = opts.parent ? prefix + " > " : "";
 
 	CSS[prefixChildren + ".fi"] = {
-		width: "auto",
+		width: 0,
+		flexGrow: 1,
 	};
 
-	let flexGrow1 = [prefixChildren + ".fi"];
+	CSS[prefixChildren + ".fi-a"] = {
+		width: "auto",
+		flexGrow: 1,
+	};
+
 	let hidden = [];
 
 	for (let bp in BREAKS) {
-		// 2b. re-enable flex-grow for flex children without col specifiers
-		flexGrow1.push(prefixChildren + ".fi-" + bp);
-
 		hidden.push(
 			".v-" + bp,
 			".v-" + bp + "-rel",
@@ -75,10 +77,6 @@ function generate(opts) {
 			".v-" + bp + "-stk",
 		);
 	}
-
-	CSS[flexGrow1.join(",")] = {
-		flexGrow: 1,
-	};
 
 	// todo: how to prevent tabindex? opacity: 0?, visibility: hidden?
 	const hideCss = {
@@ -187,8 +185,15 @@ function generate(opts) {
 			maxWidth: BREAKS[bp] + "px"
 		};
 
+		// 2b. re-enable flex-grow for flex children without col specifiers
 		mq[prefixChildren + ".fi-" + bp] = {
+			width: 0,
+			flexGrow: 1,
+		};
+
+		mq[prefixChildren + ".fi-a-" + bp] = {
 			width: "auto",
+			flexGrow: 1,
 		};
 
 		mq[".m0-" + bp] = {
