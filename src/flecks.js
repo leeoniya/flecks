@@ -1,7 +1,7 @@
 function generate(opts) {
 	const COLS = Array(opts.cols || 12).fill(1).map((x, y) => x + y);
 	const BREAKS = opts.breaks || {
-		xs: 320,
+	//	xs: 320,
 		sm: 375,
 		md: 768,
 		lg: 1024,
