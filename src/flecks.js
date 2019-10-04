@@ -289,15 +289,20 @@ function generate(opts) {
 					let mq2 = {};
 
 					COLS.forEach(col => {
-						let sels = (
-							flg + "-" + bp + " > .fi-" + col + "-" + bp2
-							+ "," +
-							flgx + "-" + bp + " > .fi-" + col + "-" + bp2
-						);
+						for (let bp1 in BREAKS) {
+							if (bp1 < bp)
+								continue;
 
-						mq2[sels] = {
-							width: calc(col/COLS.length, g[0], g[1]),
-						};
+							let sels = (
+								flg + "-" + bp1 + " > .fi-" + col + "-" + bp2
+								+ "," +
+								flgx + "-" + bp1 + " > .fi-" + col + "-" + bp2
+							);
+
+							mq2[sels] = {
+								width: calc(col/COLS.length, g[0], g[1]),
+							};
+						}
 					});
 
 					tail["@media (min-width:" + px2 + "px)" + '\t'.repeat(gnum)] = mq2;
