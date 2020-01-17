@@ -159,6 +159,7 @@ function generate(opts) {
 		});
 	});
 
+	// TODO: this whole block needs to move inwards after the media queries
 	for (let bp in BREAKS) {
 		let mq = {};
 
@@ -187,12 +188,12 @@ function generate(opts) {
 
 		// 2b. re-enable flex-grow for flex children without col specifiers
 		mq[prefixChildren + ".fi-" + bp] = {
-			width: 0,
+			width: "0 !important",
 			flexGrow: 1,
 		};
 
 		mq[prefixChildren + ".fi-a-" + bp] = {
-			width: "auto",
+			width: "auto !important",
 			flexGrow: 1,
 		};
 
@@ -222,6 +223,7 @@ function generate(opts) {
 	let tail = {};
 
 	GAPS.forEach((g, i) => {
+		// todo: .g2 > .fi / .fi-a ?
 		for (let bp in BREAKS) {
 			let mq = {};
 			let px1 = BREAKS[bp];
