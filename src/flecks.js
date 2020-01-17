@@ -187,13 +187,15 @@ function generate(opts) {
 		};
 
 		// 2b. re-enable flex-grow for flex children without col specifiers
+		// tofix: this is not correct unconditionally since it enables flex-grow for
+		// e.g. at lg+ screen sizes & .fi-md.fi-6-lg (when there's another masking rule)
 		mq[prefixChildren + ".fi-" + bp] = {
-			width: "0 !important",
+			width: 0,
 			flexGrow: 1,
 		};
 
 		mq[prefixChildren + ".fi-a-" + bp] = {
-			width: "auto !important",
+			width: "auto",
 			flexGrow: 1,
 		};
 
@@ -224,13 +226,14 @@ function generate(opts) {
 
 	GAPS.forEach((g, i) => {
 		// todo: .g2 > .fi / .fi-a ?
+		let gnum = i + 1;
+		let flg = prefix + ".g" + gnum;
+		let flgx = prefix + ".g" + gnum + "x";
+		let flgy = prefix + ".g" + gnum + "y";
+
 		for (let bp in BREAKS) {
 			let mq = {};
 			let px1 = BREAKS[bp];
-			let gnum = i + 1;
-			let flg = prefix + ".g" + gnum;
-			let flgx = prefix + ".g" + gnum + "x";
-			let flgy = prefix + ".g" + gnum + "y";
 
 			mq[flg + "-" + bp] = {
 				padding: halfGap(g),
@@ -306,6 +309,33 @@ function generate(opts) {
 							};
 						}
 					});
+
+					// 2b. re-enable flex-grow for flex children without col specifiers
+					mq2[
+						flg + " > .fi-" + bp2
+						+ "," +
+						flgx + " > .fi-" + bp2
+						+ "," +
+						flg + "-" + bp + " > .fi-" + bp2
+						+ "," +
+						flgx + "-" + bp + " > .fi-" + bp2
+					] = {
+						width: 0,
+						flexGrow: 1,
+					};
+
+					mq2[
+						flg + " > .fi-a-" + bp2
+						+ "," +
+						flgx + " > .fi-a-" + bp2
+						+ "," +
+						flg + "-" + bp + " > .fi-a-" + bp2
+						+ "," +
+						flgx + "-" + bp + " > .fi-a-" + bp2
+					] = {
+						width: "auto",
+						flexGrow: 1,
+					};
 
 					tail["@media (min-width:" + px2 + "px)" + '\t'.repeat(gnum)] = mq2;
 				}
