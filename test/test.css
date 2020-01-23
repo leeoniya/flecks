@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'),
+       url('open-sans-v17-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('open-sans-v17-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+body {
+	font-family: 'Open Sans';
+	font-size: 14px;
+}
+
+body > .fl {
+	margin-bottom: 20px;
+}
+
+/*
+.fl {
+	text-align: center;
+}
+*/
+
+.fl > :not([class*=fi]) {
+	background: rgba(0,255,0,0.2) !important;
+}
+
+.fl {
+	background: rgba(255,0,0,0.2) !important;
+}
+
+[class*=fi]:not(.fl) {
+	background: rgba(0,0,255,0.2);
+	background: linear-gradient(45deg, rgba(0,0,255,0.2), white);
+}
+
+[class*=h-] {
+	color: red;
+}
+
+[class*=v-] {
+	color: lime;
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Flecks Tests</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="qunit-2.9.2.css">
+	<style>
+		iframe {
+			border:none;
+		}
+	</style>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<script src="qunit-2.9.2.js"></script>
+
+	<script>
+		function getRects(el) {
+			let nodes = el.querySelectorAll("*");
+
+			let rects = [];
+
+			for (let i = 0; i < nodes.length; i++) {
+				let r = nodes[i].getBoundingClientRect();
+
+				rects.push({
+					l: Math.round(r.left),
+					t: Math.round(r.top),
+					w: Math.round(r.width),
+					h: Math.round(r.height),
+				//	t: nodes[i].textContent,
+				});
+			}
+
+		//	console.log(JSON.stringify(rects));
+
+			return rects;
+		}
+
+		QUnit.config.autostart = false;
+		QUnit.config.reorder = false;
+
+		const iframe = document.createElement('iframe')
+		let idoc;
+		iframe.src = "about:blank";
+		iframe.setAttribute('scrolling', 'no');
+		iframe.style.height = 1920 + "px";
+		let started = false;
+		iframe.onload = e => {
+			if (!started) {
+				idoc = iframe.contentWindow.document;
+			//	idoc.open();
+
+				QUnit.start();
+				started = true;
+			}
+		}
+
+		function tpl(html, cb) {
+			iframe.onload = e => cb(idoc.body);
+
+			var buf = [
+				"<!doctype html>",
+				"<html>",
+				"<head>",
+					'<meta charset="utf-8">',
+					'<meta http-equiv="x-ua-compatible" content="ie=edge">',
+					'<title>Test</title>',
+					'<meta name="description" content="">',
+					'<meta name="viewport" content="width=device-width, initial-scale=1">',
+
+					'<link rel="stylesheet" href="bootstrap-reboot.min.css">',
+					'<link rel="stylesheet" href="../dist/flecks.css">',
+					'<link rel="stylesheet" href="test.css">',
+				//	"<style>",
+				//		CODE.CSS.value,
+				//	"\x3C/style>",
+				//	"<script>window.onload = function() {\n",
+				//		CODE.JS.value,
+				//	"\n}\x3C/script>",
+				"</head>",
+				"<body>",
+					html,
+				"</body>",
+				"</html>",
+			].join("");
+
+			idoc.write(buf);
+			idoc.close();
+		}
+
+		document.body.appendChild(iframe);
+	</script>
+
+	<script src="src/fi.js"></script>
+</body>
+</html>
