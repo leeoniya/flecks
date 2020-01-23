@@ -1,5 +1,6 @@
 function generate(opts) {
 	const COLS = Array(opts.cols || 12).fill(1).map((x, y) => x + y);
+
 	const BREAKS = opts.breaks || {
 	//	xs: 320,
 		sm: 375,
@@ -8,13 +9,18 @@ function generate(opts) {
 		xl: 1280,
 		xxl: 1920,
 	};
+
 	const GAPS = (opts.gaps || []).map(g => {
 		let m = /([0-9.]+)(\S*)/g.exec(g);
 		return [m[1], m[2] || "px"];
 	});
 
+	function round6(val) {
+		return Math.round(val * 1e6) / 1e6;
+	}
+
 	function calc(frac, gap, un) {
-		var pct = +(frac * 100).toFixed(6);		// use round6()
+		const pct = round6(frac * 100);
 
 		if (gap == 0)
 			return pct + "%";
