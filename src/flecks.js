@@ -68,7 +68,7 @@ function generate(opts) {
 		top: "100%",			// !important
 		left: "100%",			// !important
 		"-webkit-user-select": "none",
-		"-moz-user-select": "none",
+	//	"-moz-user-select": "none",
 		"-ms-user-select": "none",
 		userSelect: "none",
 	};
@@ -77,7 +77,7 @@ function generate(opts) {
 		left: "auto",
 		top: "auto",
 		"-webkit-user-select": "auto",
-		"-moz-user-select": "auto",
+	//	"-moz-user-select": "auto",
 		"-ms-user-select": "auto",
 		userSelect: "auto",
 	};
@@ -246,44 +246,24 @@ function generate(opts) {
 				marginBottom: halfGap(g),
 			};
 
-			mq[
-				flg  + " > .fi-" + bp
-				+ "," +
-				flgx + " > .fi-" + bp
-			] = fi;
+			mq[[
+				flg  + " > .fi-" + bp,
+				flgx + " > .fi-" + bp,
+				flg  + "-" + bp + " > .fi",
+				flgx  + "-" + bp + " > .fi",
+			].join()] = fi;
 
-			mq[
-				flg  + " > .fi-a-" + bp
-				+ "," +
-				flgx + " > .fi-a-" + bp
-			] = fia;
+			mq[[
+				flg  + " > .fi-a-" + bp,
+				flgx + " > .fi-a-" + bp,
+				flg  + "-" + bp + " > .fi-a",
+				flgx  + "-" + bp + " > .fi-a",
+			].join()] = fia;
 
 			COLS.forEach(col => {
 				let sels = [
 					flg  + " > .fi-" + col + "-" + bp,
 					flgx + " > .fi-" + col + "-" + bp,
-				];
-
-				mq[sels.join()] = {
-					flex: "0 0 " + calc(col/COLS.length, g[0], g[1]),
-				};
-			});
-
-
-			mq[
-				flg  + "-" + bp + " > .fi"
-				+ "," +
-				flgx  + "-" + bp + " > .fi"
-			] = fi;
-
-			mq[
-				flg  + "-" + bp + " > .fi-a"
-				+ "," +
-				flgx  + "-" + bp + " > .fi-a"
-			] = fia;
-
-			COLS.forEach(col => {
-				let sels = [
 					flg  + "-" + bp + " > .fi-" + col,
 					flgx + "-" + bp + " > .fi-" + col,
 				];
@@ -293,23 +273,49 @@ function generate(opts) {
 				};
 			});
 
+			let sels1 = [];
+			let sels2 = [];
+
 			for (let bp2 in BREAKS) {
 				let px2 = BREAKS[bp2];
 
 				if (px2 <= px) {
-					mq[
-						flg  + "-" + bp2 + " > .fi-" + bp
-						+ "," +
-						flgx + "-" + bp2 + " > .fi-" + bp
-					] = fi;
+					sels1.push(
+						flg  + "-" + bp + " > .fi-" + bp2,
+						flgx + "-" + bp + " > .fi-" + bp2,
+					);
 
-					mq[
-						flg  + "-" + bp2 + " > .fi-a-" + bp
-						+ "," +
-						flgx + "-" + bp2 + " > .fi-a-" + bp
-					] = fia;
+					sels2.push(
+						flg  + "-" + bp + " > .fi-a-" + bp2,
+						flgx + "-" + bp + " > .fi-a-" + bp2,
+					);
 				}
 			}
+
+			mq[sels1.join()] = fi;
+			mq[sels2.join()] = fia;
+
+			let sels3 = [];
+			let sels4 = [];
+
+			for (let bp2 in BREAKS) {
+				let px2 = BREAKS[bp2];
+
+				if (px2 <= px) {
+					sels3.push(
+						flg  + "-" + bp2 + " > .fi-" + bp,
+						flgx + "-" + bp2 + " > .fi-" + bp,
+					);
+
+					sels4.push(
+						flg  + "-" + bp2 + " > .fi-a-" + bp,
+						flgx + "-" + bp2 + " > .fi-a-" + bp,
+					);
+				}
+			}
+
+			mq[sels3.join()] = fi;
+			mq[sels4.join()] = fia;
 
 			for (let bp2 in BREAKS) {
 				let px2 = BREAKS[bp2];
@@ -342,29 +348,6 @@ function generate(opts) {
 					});
 				}
 			}
-
-			let sels = [];
-			let sels2 = [];
-
-			for (let bp2 in BREAKS) {
-				let px2 = BREAKS[bp2];
-
-				if (px2 <= px) {
-					sels.push(
-						flg  + "-" + bp + " > .fi-" + bp2,
-						flgx + "-" + bp + " > .fi-" + bp2,
-					);
-
-					sels2.push(
-						flg  + "-" + bp + " > .fi-a-" + bp2,
-						flgx + "-" + bp + " > .fi-a-" + bp2,
-					);
-				}
-			}
-
-			mq[sels.join()] = fi;
-
-			mq[sels2.join()] = fia;
 
 			CSS["@media (min-width:" + BREAKS[bp] + "px)" + '\t'.repeat(gnum)] = mq;
 		}
